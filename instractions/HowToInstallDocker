@@ -1,0 +1,65 @@
+new:
+docker build -f Dockerfile-jenkins -t jenkins-server .
+
+docker build -f Dockerfile-flask -t flask-app .
+
+docker-compose up --build
+
+docker ps
+
+docker run -d --name flask-app -p 5000:5000 flask-app
+
+docker run -d --name jenkins-server -p 8080:8080 -p 50000:50000 jenkins-server
+
+
+
+
+old:
+docker build -t jenkins-image --target jenkins .
+docker run -d -p 8080:8080 --name jenkins-server jenkins-image
+
+docker build -t flask-image --target flask .
+docker run -d -p 5000:5000 --name flask-server flask-image
+
+docker stop jenkins-server
+docker stop flask-server
+
+docker rm jenkins-server
+docker rm flask-server
+
+
+docker-compose up --build -d
+
+
+
+docker ps
+
+docker ps -a 
+
+docker images
+
+docker network ls
+
+docker volume ls
+
+
+
+docker permissions:
+
+sudo usermod -aG docker ec2-user
+newgrp docker
+
+sudo usermod -aG docker jenkins
+sudo systemctl restart jenkins
+
+sudo su - jenkins
+docker --version
+
+
+
+docker tag app-flask:latest avihay1997/app-flask:latest
+docker tag app-jenkins:latest avihay1997/app-jenkins:latest
+
+docker push avihay1997/app-flask:latest
+docker push avihay1997/app-jenkins:latest
+
